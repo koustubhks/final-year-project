@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Selection Page</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Assuming you have a CSS file for styling -->
+    <style>
+        /* Additional styles specific to this page */
+        .image-section {
+            margin: 20px auto;
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+        }
+        .image-section img {
+            width: 300px;
+            height: auto;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .image-section img:hover {
+            transform: scale(1.1);
+        }
+        .result-info {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="Knowabouttumor.html">Know about Tumor</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="image.html">Check Tumor</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Image Sections -->
+    <div class="image-section">
+        <div>
+            <a href="Glioma.html"><img src="static/glioma2.jpg" alt="Glioma Tumor"></a>
+            <p>Glioma Tumor</p>
+        </div>
+        <div>
+            <a href="menin.html"><img src="static/menin.jpg" alt="Meningioma Tumor"></a>
+            <p>Meningioma Tumor</p>
+        </div>
+    </div>
+
+    <div class="image-section">
+        <div>
+            <a href="pit.html"><img src="static/pit.jpeg" alt="Pituitary Tumor"></a>
+            <p>Pituitary Tumor</p>
+        </div>
+        <div>
+            <a href="notumor.html"><img src="static/no_tum.jpg" alt="No Tumor"></a>
+            <p>No Tumor</p>
+        </div>
+    </div>
+
+    <!-- Result Information -->
+    <div class="result-info">
+        <h2>Image Results</h2>
+        <p>Result information for the selected image will appear here.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Image Selection. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Get all images
+        const images = document.querySelectorAll('.image-section img');
+
+        // Add click event listener to each image
+        images.forEach(image => {
+            image.addEventListener('click', () => {
+                // Hide all result information
+                const resultInfo = document.querySelector('.result-info');
+                resultInfo.style.display = 'none';
+
+                // Show result information for the clicked image
+                const imageNumber = image.nextElementSibling.textContent.split(' ')[1];
+                resultInfo.querySelector('p').textContent = `Result information for Image ${imageNumber} will appear here.`;
+                resultInfo.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

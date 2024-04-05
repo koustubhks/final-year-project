@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Team HackN</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Assuming you have a CSS file for styling -->
+    <style>
+        /* Additional styles specific to this page */
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .lead {
+            font-size: 24px;
+        }
+        .contact-form {
+            max-width: 500px; /* Adjust the max-width as needed */
+            margin: auto;
+            text-align: left;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            height: 150px; /* Adjust the height as needed */
+        }
+        .form-group input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="Knowabouttumor.html">Know about Tumor</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="image.html">Check Tumor</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <h2 class="lead">Contact Us</h2>
+    <br/>
+
+    <div class="contact-form">
+        <form id="contactForm" action="#" method="post">
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Your Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send Message">
+            </div>
+        </form>
+        <div id="errorMessages" class="error-message"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Team HackN. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById('contactForm');
+        const errorMessages = document.getElementById('errorMessages');
+
+        form.addEventListener('submit', function(event) {
+            errorMessages.innerHTML = '';
+            let isValid = true;
+
+            // Check name
+            const nameInput = document.getElementById('name');
+            if (!nameInput.value.trim()) {
+                isValid = false;
+                showError('Name is required.');
+            }
+
+            // Check email
+            const emailInput = document.getElementById('email');
+            if (!emailInput.value.trim()) {
+                isValid = false;
+                showError('Email is required.');
+            } else if (!isValidEmail(emailInput.value.trim())) {
+                isValid = false;
+                showError('Invalid email address.');
+            }
+
+            // Check message
+            const messageInput = document.getElementById('message');
+            if (!messageInput.value.trim()) {
+                isValid = false;
+                showError('Message is required.');
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        function showError(message) {
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = message;
+            errorMessages.appendChild(errorMessage);
+        }
+
+        function isValidEmail(email) {
+            // Basic email validation regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+</body>
+</html>

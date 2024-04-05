@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Detection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="Knowabouttumor.html">Know about Tumor</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="image.html">Check Tumor</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Brain Tumor Detection</h1>
+    </header>
+
+    <main>
+        <center><img src="../static/brain_logo.png" class="img-fluid" alt="logo"></center>
+        <br>
+        <figure class="text-center">
+            <blockquote class="blockquote">
+                <p class='lead'>The human brain is probably one of the most complex single<br> objects on the face of the earth; I think it is, quite honestly.</p>
+            </blockquote>
+            <br>
+            <figcaption class="blockquote-footer">
+                <cite title="Source Title"><!-- HACKN--></cite>
+            </figcaption>
+        </figure>
+        <br />
+        <form id="image-form" method="POST" enctype="multipart/form-data" style="text-align: center;">
+            <input type="file" id="image-input" name="image" accept="image/*" onchange="handleImageSelection(event)">
+            <br/>
+            <img id="preview-image" src="#" alt="Selected Image" style="display: none; max-width: 400px;">
+            <br/>
+            <div id="image-message" style="display: none; color: green;">Image selected successfully.</div>
+            <br/>
+            <input type="submit" value="Submit" disabled>
+            <br/>
+        </form>
+        <br />
+        <div id="result-container" style="display: none;">
+            <p>Tumor Type: <span id="tumor-type"></span></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy;  2024 Brain Tumor Detection. All rights reserved.</p>
+    </footer>
+
+    <!-- Optional: You can add JavaScript files if needed -->
+    <script>
+        function handleImageSelection(event) {
+            var preview = document.getElementById('preview-image');
+            var message = document.getElementById('image-message');
+            var submitButton = document.querySelector('input[type="submit"]');
+
+            var files = event.target.files;
+
+            if (files.length > 1) {
+                alert("Only one image can be selected.");
+                event.target.value = ''; // Clear the selected files
+                preview.src = '';
+                preview.style.display = 'none';
+                message.style.display = 'none';
+                submitButton.disabled = true;
+                return;
+            }
+
+            var file = files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.style.display = 'block'; // Show the preview image
+                message.style.display = 'block'; // Show the message
+                submitButton.disabled = false; // Enable the submit button
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); // Convert image file to base64 string
+            } else {
+                preview.src = '';
+                preview.style.display = 'none'; // Hide the preview if no image selected
+                message.style.display = 'none'; // Hide the message if no image selected
+                submitButton.disabled = true; // Disable the submit button if no image selected
+            }
+        }
+
+        async function submitForm(event) {
+            event.preventDefault();
+
+            var form = document.getElementById('image-form');
+            var formData = new FormData(form);
+
+            try {
+                var response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    var data = await response.json();
+                    var tumorType = data.prediction;
+
+                    var tumorTypeElement = document.getElementById('tumor-type');
+                    var resultContainer = document.getElementById('result-container');
+
+                    tumorTypeElement.textContent = tumorType;
+                    resultContainer.style.display = 'block';
+                } else {
+                    throw new Error('Error occurred during prediction');
+                }
+            } catch (error) {
+                console.error('Error occurred during prediction:', error.message);
+               // alert('Error occurred during prediction. Please try again.');
+            }
+        }
+
+        document.getElementById('image-form').addEventListener('submit', submitForm);
+    </script>
+</body>
+
+</html>
